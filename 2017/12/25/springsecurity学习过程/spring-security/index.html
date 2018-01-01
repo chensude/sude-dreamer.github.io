@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="标签," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,18 +79,17 @@
 
 
 
-<meta name="description" content="前言  记录spring-security的学习过程 环境的配置pom文件中加入依赖的声明：12345&amp;lt;dependency&amp;gt;    &amp;lt;!-- 使用了spring io所以不需要填写依赖的版本号 --&amp;gt;    		&amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;    		&amp;lt;artifactId&amp;gt;sp">
-<meta name="keywords" content="标签">
+<meta name="description" content="前言记录spring-security的学习过程，大家一起进步">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从零开始学spring-security系列（一）">
 <meta property="og:url" content="https://sude-dreamer.github.io/2017/12/25/springsecurity学习过程/spring-security/index.html">
 <meta property="og:site_name" content="你好，2018">
-<meta property="og:description" content="前言  记录spring-security的学习过程 环境的配置pom文件中加入依赖的声明：12345&amp;lt;dependency&amp;gt;    &amp;lt;!-- 使用了spring io所以不需要填写依赖的版本号 --&amp;gt;    		&amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;    		&amp;lt;artifactId&amp;gt;sp">
+<meta property="og:description" content="前言记录spring-security的学习过程，大家一起进步">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-01T10:57:40.366Z">
+<meta property="og:updated_time" content="2018-01-01T11:57:21.656Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从零开始学spring-security系列（一）">
-<meta name="twitter:description" content="前言  记录spring-security的学习过程 环境的配置pom文件中加入依赖的声明：12345&amp;lt;dependency&amp;gt;    &amp;lt;!-- 使用了spring io所以不需要填写依赖的版本号 --&amp;gt;    		&amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;    		&amp;lt;artifactId&amp;gt;sp">
+<meta name="twitter:description" content="前言记录spring-security的学习过程，大家一起进步">
 
 
 
@@ -293,28 +292,6 @@
           </span>
 
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/目录/" itemprop="url" rel="index">
-                    <span itemprop="name">目录</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -342,7 +319,8 @@
       
 
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>  <strong>记录spring-security的学习过程</strong></p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><pre><code>记录spring-security的学习过程，大家一起进步
+</code></pre><a id="more"></a>
 <h1 id="环境的配置"><a href="#环境的配置" class="headerlink" title="环境的配置"></a>环境的配置</h1><p>pom文件中加入依赖的声明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;!-- 使用了spring io所以不需要填写依赖的版本号 --&gt;</span><br><span class="line">    		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    		&lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
 <p>启动新建的项目,浏览器访问<code>localhost:8080</code>,可以看到springsecurity的默认认证方式是<br>httpBasic的，httpsecurity的默认配置，登录的用户名是user，密码是打印在console<br>控制台上的随机值，每次都是随机打印的，效果图如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Using default security password: bf91c555-f0db-44fd-9b30-a83ebd2db051</span><br></pre></td></tr></table></figure></p>
 <p>这种认证方式可能在实际应用中并不怎么合适，如果我们想用表单认证该怎么做呢？继续配置下去，首先新建一个自己的类securityConfig,继承WebSecurityConfigurerAdapter,在类上加上<code>@configuration</code>注解，重写WebSecurityConfigurerAdapter的方法如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">trueprotected void configure(HttpSecurity http) throws Exception &#123;</span><br><span class="line">    http</span><br><span class="line">    .authorizeRequests()</span><br><span class="line">    .anyRequest()</span><br><span class="line">    .authenticated()</span><br><span class="line">    .and()</span><br><span class="line">    .formLogin();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -362,12 +340,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/标签/" rel="tag"># 标签</a>
-          
-        </div>
-      
 
       
       
@@ -376,10 +348,6 @@
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/12/15/first/" rel="next" title="first">
-                <i class="fa fa-chevron-left"></i> first
-              </a>
             
           </div>
 
@@ -470,32 +438,14 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
             
-              
-              
-              <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">分类</span>
-                
-              </div>
-            
 
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">标签</span>
-                </a>
-              </div>
             
 
           </nav>
